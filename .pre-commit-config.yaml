@@ -1,0 +1,50 @@
+fail_fast: false
+repos:
+  - repo: meta
+    hooks:
+      - id: check-hooks-apply
+      - id: check-useless-excludes
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: check-added-large-files # prevents giant files from being committed.
+      - id: check-case-conflict # checks for files that would conflict in case-insensitive filesystems.
+      - id: check-executables-have-shebangs # Verifies scripts will run
+      - id: check-merge-conflict # checks for files that contain merge conflict strings.
+      - id: check-symlinks     # look for dangling links
+      - id: check-toml         # verifies TOML is valid
+      - id: check-yaml         # verifies YAML is valid
+      - id: detect-private-key # detects the presence of private keys.
+      - id: fix-byte-order-marker # removes utf-8 byte order marker.
+      - id: forbid-new-submodules # stop using submodules and make cmake pull the file
+      - id: mixed-line-ending # replaces or checks mixed line ending.
+      - id: no-commit-to-branch
+      - id: pretty-format-json
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+  - repo: https://github.com/pocc/pre-commit-hooks
+    rev: v1.3.5
+    hooks:
+      - id: clang-format
+        args: [--style=Google]
+        exclude: ^(/ext/)
+      - id: cpplint
+      - id: cppcheck
+        name: cppcheck
+        args: [
+          #          --enable=warning,
+          #          --enable=portability,
+          --enable=missingInclude,
+          --language=c++,
+          --std=c++17,
+          -j 3,
+          src
+        ]
+        files: \.(c|h|cpp)$
+      - id: clang-tidy
+  #      - id: uncrustify
+  #        args: [--replace ]
+  - repo: https://github.com/BlankSpruce/gersemi
+    rev: 0.11.0
+    hooks:
+      - id: gersemi
