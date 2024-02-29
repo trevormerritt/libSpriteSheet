@@ -1,25 +1,13 @@
 cmake_minimum_required(VERSION 3.12)
-
-function(dump_cmake_variables)
-    get_cmake_property(_variableNames VARIABLES)
-    list (SORT _variableNames)
-    foreach (_variableName ${_variableNames})
-        if (ARGV0)
-            unset(MATCHED)
-            string(REGEX MATCH ${ARGV0} MATCHED ${_variableName})
-            if (NOT MATCHED)
-                continue()
-            endif()
-        endif()
-        message(STATUS "${_variableName}=${${_variableName}}")
-    endforeach()
-endfunction()
-
 project(SpriteSheet VERSION 1.0.0 LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 17)
+include("cmake/dump_cmake_variables.cmake")
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 include(FetchContent)
 Set(FETCHCONTENT_QUIET FALSE)
 FetchContent_Declare(jsoncpp GIT_REPOSITORY https://github.com/open-source-parsers/jsoncpp/ GIT_TAG master)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 FetchContent_MakeAvailable(jsoncpp)
 
 add_library(
@@ -54,8 +42,7 @@ add_library(
 # get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
 
 include_directories(${JSON_INC_PATH})
-
-# target_link_libraries(${PROJECT_NAME} jsoncpp_lib)
+target_link_libraries(SpriteSheet PUBLIC jsoncpp_object JsonCpp::JsonCpp)
 
 target_include_directories(
     SpriteSheet
