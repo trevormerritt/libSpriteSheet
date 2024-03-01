@@ -2,13 +2,12 @@ cmake_minimum_required(VERSION 3.12)
 project(SpriteSheet VERSION 1.0.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 include("cmake/dump_cmake_variables.cmake")
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 include(FetchContent)
 Set(FETCHCONTENT_QUIET FALSE)
-FetchContent_Declare(jsoncpp GIT_REPOSITORY https://github.com/open-source-parsers/jsoncpp/ GIT_TAG master)
+
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-FetchContent_MakeAvailable(jsoncpp)
+add_subdirectory("ext/jsoncpp")
 
 add_library(
     SpriteSheet
@@ -38,11 +37,9 @@ add_library(
 #    src/SpriteSheetManager.cpp
 )
 
-# cmake -DCMAKE_BUILD_TYPE=debug -DBUILD_STATIC_LIBS=ON -DBUILD_SHARED_LIBS=OFF -DARCHIVE_INSTALL_DIR=. -G "Unix Makefiles" ../..
-# get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)
 
 include_directories(${JSON_INC_PATH})
-target_link_libraries(SpriteSheet PUBLIC jsoncpp_object JsonCpp::JsonCpp)
+target_link_libraries(SpriteSheet PUBLIC jsoncpp_static)
 
 target_include_directories(
     SpriteSheet
